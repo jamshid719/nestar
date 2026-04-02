@@ -8,11 +8,11 @@ import { Connection } from 'mongoose';
 		MongooseModule.forRootAsync({
 			useFactory: () => ({
 				uri: process.env.NODE_ENV === 'production' ? process.env.MONGO_PROD : process.env.MONGO_DEV,
-			}),
+			}), //NODE_ENV=production => package.json da yozilgan
 		}),
 	],
 	exports: [MongooseModule],
-}) //NODE_ENV=production
+})
 export class DatabaseModule {
 	constructor(@InjectConnection() private readonly connection: Connection) {
 		if (connection.readyState === 1) {
