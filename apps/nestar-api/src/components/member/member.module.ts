@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import MemberSchema from '../../schemas/Member.model';
 
 @Module({
+	//MemberSchema modelini hosil qilish
 	imports: [MongooseModule.forFeature([{ name: 'Member', schema: MemberSchema }])],
 	providers: [MemberResolver, MemberService],
 })
