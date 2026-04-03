@@ -11,13 +11,13 @@ import { BoardArticleModule } from './board-article/board-article.module';
 @Module({
 	imports: [
 		MemberModule,
-		PropertyModule,
 		AuthModule,
+		PropertyModule,
+		BoardArticleModule,
 		CommentModule,
 		LikeModule,
 		ViewModule,
 		FollowModule,
-		BoardArticleModule,
 	],
 })
 export class ComponentsModule {} //=> app.module.ts
