@@ -3,19 +3,19 @@ import { MemberAuthType, MemberStatus, MemberType } from '../libs/enums/member.e
 
 const MemberSchema = new Schema(
 	{
-		MemberType: {
+		memberType: {
 			type: String,
 			enum: MemberType,
 			default: MemberType.USER,
 		},
 
-		MemberStatus: {
+		memberStatus: {
 			type: String,
 			enum: MemberStatus,
 			default: MemberStatus.ACTIVE,
 		},
 
-		MemberAuthType: {
+		memberAuthType: {
 			type: String,
 			enum: MemberAuthType,
 			default: MemberAuthType.PHONE,
@@ -96,7 +96,7 @@ const MemberSchema = new Schema(
 			default: 0,
 		},
 
-		memberRanks: {
+		memberRank: {
 			type: Number,
 			default: 0,
 		},
