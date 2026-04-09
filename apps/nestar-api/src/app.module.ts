@@ -18,6 +18,7 @@ import { T } from './libs/types/common';
 			uploads: false,
 			autoSchemaFile: true,
 			formatError: (error: T) => {
+				console.log('error1:', error);
 				//Bu Graphql da sodir bulgan ixtiyoriy xatolikni olib beradi.
 
 				const graphQLFormattedError = {
