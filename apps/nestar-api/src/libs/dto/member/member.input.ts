@@ -1,9 +1,10 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsIn, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
-import { MemberAuthType, MemberType } from '../../enums/member.enum';
-import { availableAgentSorts } from '../../config';
+import { MemberAuthType, MemberStatus, MemberType } from '../../enums/member.enum';
+import { availableAgentSorts, availablMemberSorts } from '../../config';
 import { Direction } from '../../enums/common.enum';
 
+/**SIGNUP_input */
 @InputType() // FR => Backend ga kirayotgan datalar
 export class MemberInput {
 	@IsNotEmpty()
@@ -29,6 +30,7 @@ export class MemberInput {
 	memberAuthType?: MemberAuthType;
 }
 
+/**LOGIN_input */
 @InputType()
 export class LoginInput {
 	@IsNotEmpty()
@@ -42,9 +44,11 @@ export class LoginInput {
 	memberPassword: string;
 }
 
+/**GETAGENT_input */
+//shu qolip asnosida query va search mantiqlarni tawkil etish shart.
 @InputType()
 class AISearch {
-	@IsNotEmpty()
+	@IsOptional()
 	@Field(() => String, { nullable: true })
 	text?: string;
 }
@@ -70,7 +74,49 @@ export class AgentsInquiry {
 	@Field(() => Direction, { nullable: true }) //enum
 	direction?: Direction;
 
-	@IsNotEmpty()
+	@IsNotEmpty() //search mantigi
 	@Field(() => AISearch)
 	search: AISearch;
+}
+
+/**ADMIN => getAllMemberByAdmin()*/
+@InputType()
+class MISearch {
+	@IsOptional()
+	@Field(() => MemberStatus, { nullable: true })
+	memberStatus?: MemberStatus; // Admin har qanday memberStatusli memberlarni chaqirishi mumkin.
+
+	@IsOptional()
+	@Field(() => MemberType, { nullable: true })
+	memberType?: MemberType; // Admin har qanday memberTypeli memberlarni chaqirishi mumkin.
+
+	@IsOptional()
+	@Field(() => String, { nullable: true })
+	text?: string;
+}
+
+@InputType()
+export class MembersInquiry {
+	@IsNotEmpty()
+	@Min(1) //berilgan qiymat 1 dan kichik bo‘lmasligini kk
+	@Field(() => Int)
+	page: number;
+
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	limit: number;
+
+	@IsOptional()
+	@IsIn([availablMemberSorts])
+	@Field(() => String, { nullable: true })
+	sort?: string;
+
+	@IsOptional()
+	@Field(() => Direction, { nullable: true })
+	direction?: Direction;
+
+	@IsNotEmpty()
+	@Field(() => MISearch)
+	search: MISearch;
 }

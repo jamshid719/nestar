@@ -82,13 +82,13 @@ export class Member {
 	accessToken?: string;
 }
 
+/**getAgents da ishlatiladigan type  */
 @ObjectType()
 export class TotalCounter {
 	@Field(() => Int, { nullable: true })
 	total: number;
 }
 
-/**getAgents da ishlatiladigan type  */
 @ObjectType()
 export class Members {
 	@Field(() => [Member])
