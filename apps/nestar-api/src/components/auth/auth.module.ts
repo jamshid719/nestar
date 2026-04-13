@@ -12,6 +12,6 @@ import { JwtModule } from '@nestjs/jwt';
 		}),
 	],
 	providers: [AuthService],
-	exports: [AuthService],
+	exports: [AuthService], // bowqa joyda ishlatish un (export qiliw wart)
 })
-export class AuthModule {}
+export class AuthModule {} //export ichidagi yozilgan narsalar, shu orqali ishlatilsin degani
