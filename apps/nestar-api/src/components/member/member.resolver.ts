@@ -1,8 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { MemberService } from './member.service';
 import { InternalServerErrorException, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { LoginInput, MemberInput } from '../../libs/dto/member/member.input';
-import { Member } from '../../libs/dto/member/member';
+import { AgentsInquiry, LoginInput, MemberInput } from '../../libs/dto/member/member.input';
+import { Member, Members } from '../../libs/dto/member/member';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
@@ -62,7 +62,7 @@ export class MemberResolver {
 		return `Hi, ${authMember.memberNick}, you are ${authMember.memberType} (memberId: ${authMember._id})`;
 	}
 
-	@UseGuards(WithoutGuard) //Auth member bulsa bulmasa kngi bosqichga utkaz degani.
+	@UseGuards(WithoutGuard) //Auth member(ixtiyoriy member) bulsa bulmasa kngi bosqichga utkaz degani.
 	@Query(() => Member)
 	public async getMember(@Args('memberId') input: string, @AuthMember('_id') memberId: ObjectId): Promise<Member> {
 		console.log('Query: getMember');
@@ -70,8 +70,14 @@ export class MemberResolver {
 		return this.memberService.getMember(memberId, targetId);
 	}
 
-	/**ADMIN */
+	@UseGuards(WithoutGuard) //ixtiyoriy member ishlata oladibu apini
+	@Query(() => Members)
+	public async getAgents(@Args('input') input: AgentsInquiry, @AuthMember('_id') memberId: ObjectId): Promise<Members> {
+		console.log('Query: getAgents');
+		return this.memberService.getAgents(memberId, input);
+	}
 
+	/**ADMIN */
 	@Roles(MemberType.ADMIN)
 	@UseGuards(RolesGuard)
 	@Mutation(() => String)
