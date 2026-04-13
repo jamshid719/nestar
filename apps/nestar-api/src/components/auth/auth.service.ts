@@ -25,7 +25,7 @@ export class AuthService {
 			payload[`${ele}`] = member[`${ele}`];
 		}); // bunday qilishimizdan maqsad, member har doim uzi bn kelmasligi mumkin, yana '_doc' ichida ham kelishi mumkin.
 		delete payload.memberPassword; // payload da memberPasswordni uchiriwimiz kk.
-		console.log('payload:', payload);
+		// console.log('payload:', payload);
 		return await this.jwtService.signAsync(payload);
 	}
 

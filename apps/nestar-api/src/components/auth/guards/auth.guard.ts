@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
 			if (!authMember) throw new UnauthorizedException(Message.NOT_AUTHENTICATED);
 
 			console.log('memberNick[auth] =>', authMember.memberNick);
-			request.body.authMember = authMember;
+			request.body.authMember = authMember; // bu yerda request.body ichiga authMember hosil qilgan holda(request.body.authMember) va buni  tepadagi authmember bn boyitayapmiz.
 
 			return true;
 		}

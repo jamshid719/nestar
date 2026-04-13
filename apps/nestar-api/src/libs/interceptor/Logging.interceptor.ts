@@ -12,6 +12,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
 		if (requestType === 'http') {
 			/**Develop if needed!*/
+			//const req = context.switchToHttp().getRequest();
 		} else if (requestType === 'graphql') {
 			/**(1) Print Request */
 			const gqlContext = GqlExecutionContext.create(context);
@@ -34,7 +35,7 @@ export class LoggingInterceptor implements NestInterceptor {
 	}
 }
 
-// Buni develop qilishda, yani req. kelayotgan va res. chiqayotgan datalarni datalarni  yahshiroq log qilishda, Callhandler pkg kk buladi.
+// Buni develop qilishda, yani req. kelayotgan va res. chiqayotgan datalarni datalarni  yahshiroq log qilishda, Logger pkg kk buladi.
 
 //Standard Logging:
 /** export class LoggingInterceptor implements NestInterceptor {

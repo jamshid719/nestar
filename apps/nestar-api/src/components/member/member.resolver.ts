@@ -9,6 +9,7 @@ import { ObjectId } from 'mongoose';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { MemberType } from '../../libs/enums/member.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { MemberUpdate } from '../../libs/dto/member/member.update';
 
 @Resolver()
 export class MemberResolver {
@@ -29,12 +30,16 @@ export class MemberResolver {
 
 	//Authenticated
 	@UseGuards(AuthGuard)
-	@Mutation(() => String)
-	public async updateMember(@AuthMember('_id') memberId: ObjectId): Promise<string> {
+	@Mutation(() => Member) //GraphQL schema(frontend un)
+	public async updateMember(
+		@Args('input') input: MemberUpdate,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Member> {
+		//Type safety (backend un)
 		console.log('Mutation: updateMember');
-		// console.log(memberId);
-		return this.memberService.updateMember();
-	}
+		delete input._id; //inputdan kelayotgan _id uchiramiz, sababi id ni @AuthMember olishimz sababli
+		return this.memberService.updateMember(memberId, input);
+	} //@AuthMember custom param decoratorning ishlatish maqsadi, auth bulgan userning malumotlari updateMember() methodini ichida bizga kk buladi.
 
 	//for Test
 	@UseGuards(AuthGuard)
