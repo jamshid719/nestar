@@ -119,12 +119,13 @@ export class MemberService {
 						// bir vaqtning uzida bir qancha querylarni amalga oshirib, alohida nomlar bn natijalarni olsa buladi.
 						list: [{ $skip: (input.page - 1) * input.limit }, { $limit: input.limit }],
 						metaCounter: [{ $count: 'total' }], //countni 'total' nom bilan nomlash
-					}, //facet dagi pipelinelar(list, metaCounter) tepadagi $match va $sort qonuniyatga buysungan holda, bir biridan mustaqil bulgan(uzoro bogliq bulmagan) qiymatlar qaytaradi
+					}, //facet dagi pipelinelar(list, metaCounter) tepadagi $match va $sort qonuniyatga buysungan holda, bir biridan mustaqil bulgan(uzoro bogliq bulmagan) qiymatlar qaytaradi. Xulosa qilib aytganda, facet aggregation ichida aggregationlar yaratadi(list, metaCounter...)
 				},
 			])
 			.exec();
 
 		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
 		return result[0];
 	}
 

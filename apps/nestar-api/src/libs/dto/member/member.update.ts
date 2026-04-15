@@ -8,7 +8,7 @@ export class MemberUpdate {
 	//bu DTO ni biz updateMember() va getAllMemberByAdmin() graphql apilarda ishlatamiz.
 	@IsNotEmpty()
 	@Field(() => String)
-	_id: ObjectId;
+	_id: ObjectId; //bu yerga quyishimz sababi, admin shu _id orqali memberning datalarini update qila oladi.
 
 	@IsOptional()
 	@Field(() => MemberType, { nullable: true })
