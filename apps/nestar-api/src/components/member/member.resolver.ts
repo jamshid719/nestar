@@ -105,7 +105,7 @@ export class MemberResolver {
 	public async imageUploader(
 		@Args({ name: 'file', type: () => GraphQLUpload })
 		{ createReadStream, filename, mimetype }: FileUpload,
-		@Args('target') target: String,
+		@Args('target') target: String, //bu yerda filelarni targetini belgilaymiz, yani qaerda saqlashni kursatamiz.
 	): Promise<string> {
 		console.log('Mutation: imageUploader');
 
