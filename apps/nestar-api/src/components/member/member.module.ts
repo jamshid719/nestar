@@ -10,5 +10,6 @@ import { ViewModule } from '../view/view.module';
 	//MemberSchema modelini hosil qilish
 	imports: [MongooseModule.forFeature([{ name: 'Member', schema: MemberSchema }]), AuthModule, ViewModule],
 	providers: [MemberResolver, MemberService],
+	exports: [MemberService],
 })
 export class MemberModule {}

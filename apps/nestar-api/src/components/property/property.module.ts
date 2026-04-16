@@ -5,9 +5,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ViewModule } from '../view/view.module';
 import { AuthModule } from '../auth/auth.module';
 import PropertySchema from '../../schemas/Property.model';
+import { MemberModule } from '../member/member.module';
 
 @Module({
-	imports: [MongooseModule.forFeature([{ name: 'Property', schema: PropertySchema }]), AuthModule, ViewModule],
+	imports: [
+		MongooseModule.forFeature([{ name: 'Property', schema: PropertySchema }]),
+		AuthModule,
+		ViewModule,
+		MemberModule,
+	],
 	providers: [PropertyResolver, PropertyService],
 })
 export class PropertyModule {}
