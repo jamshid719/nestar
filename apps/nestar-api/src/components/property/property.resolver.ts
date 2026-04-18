@@ -52,7 +52,7 @@ export class PropertyResolver {
 		@AuthMember('_id') memberId: ObjectId,
 	): Promise<Property> {
 		console.log('Mutation: updateProperty');
-		const propertyId = shapeIntoMongooseObjectId(input._id);
+		input._id = shapeIntoMongooseObjectId(input._id);
 		return await this.propertyService.updateProperty(memberId, input);
 	}
 

@@ -60,7 +60,7 @@ export class PropertyService {
 			}
 			//meLiked
 		}
-		targetProperty.memberData = await this.memberService.getMember(null, targetProperty.memberId);
+		targetProperty.memberData = await this.memberService.getMember(null, targetProperty.memberId); //null quyishimz sabab=> bu yerda shu propertyni yaratgan memberning viewi  oshmaydi.
 		return targetProperty;
 	}
 
@@ -77,8 +77,8 @@ export class PropertyService {
 			propertyStatus: PropertyStatus.ACTIVE,
 		};
 
-		if (propertyStatus === PropertyStatus.SOLD) soldAt = moment().toDate();
-		else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate();
+		if (propertyStatus === PropertyStatus.SOLD) input.soldAt = moment().toDate();
+		else if (propertyStatus === PropertyStatus.DELETE) input.deletedAt = moment().toDate();
 
 		const result = await this.propertyModel.findOneAndUpdate(search, input, { new: true }).exec();
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
@@ -94,7 +94,7 @@ export class PropertyService {
 	}
 
 	public async getProperties(memberId: ObjectId, input: PropertiesInquiry): Promise<Properties> {
-		const match: T = { PropertyStatus: PropertyStatus.ACTIVE };
+		const match: T = { propertyStatus: PropertyStatus.ACTIVE };
 		const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
 
 		this.shapeMatchQuery(match, input);
@@ -117,6 +117,7 @@ export class PropertyService {
 				},
 			])
 			.exec();
+		console.log('result', result);
 		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
 		return result[0];
@@ -220,7 +221,7 @@ export class PropertyService {
 		};
 
 		if (propertyStatus === PropertyStatus.SOLD) soldAt = moment().toDate();
-		else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate();
+		else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate(); //bu input dagi narsalar
 
 		const result = await this.propertyModel.findOneAndUpdate(search, input, { new: true }).exec();
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
