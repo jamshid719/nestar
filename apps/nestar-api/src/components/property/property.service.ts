@@ -152,6 +152,7 @@ export class PropertyService {
 			});
 		}
 	}
+
 	public async getAgentProperties(memberId: ObjectId, input: AgentPropertiesInquiry): Promise<Properties> {
 		const { propertyStatus } = input.search;
 		if (propertyStatus === PropertyStatus.DELETE) throw new BadRequestException(Message.NOT_ALLOWED_REQUEST);
@@ -220,8 +221,8 @@ export class PropertyService {
 			propertyStatus: PropertyStatus.ACTIVE,
 		};
 
-		if (propertyStatus === PropertyStatus.SOLD) soldAt = moment().toDate();
-		else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate(); //bu input dagi narsalar
+		if (propertyStatus === PropertyStatus.SOLD) input.soldAt = moment().toDate();
+		else if (propertyStatus === PropertyStatus.DELETE) input.deletedAt = moment().toDate(); //bu input dagi narsalar
 
 		const result = await this.propertyModel.findOneAndUpdate(search, input, { new: true }).exec();
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
