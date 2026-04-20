@@ -238,7 +238,7 @@ export class PropertyService {
 			propertyStatus: PropertyStatus.DELETE,
 		};
 
-		const result = await this.propertyModel.findOneAndDelete(search).exec();
+		const result = await this.propertyModel.findOneAndDelete(search).exec(); //DB dan butunlay uchirish
 		if (!result) throw new InternalServerErrorException(Message.REMOVE_FAILED);
 		return result;
 	}
