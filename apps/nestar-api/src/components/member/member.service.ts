@@ -98,7 +98,10 @@ export class MemberService {
 				targetMember.memberViews++;
 			}
 
-			//meLiked
+			//meLiked => (bunda murajatchimiz shu memberning(targetId) malumotlarini oloyotgan paytda, oldin bu memberga like bosganmi yuqmi malumotlarni topib beradigan mantigi).
+			const likeInput = { memberId: memberId, likeRefId: targetId, likeGroup: LikeGroup.MEMBER };
+			targetMember.meLiked = await this.likeService.checkLikeExistence(likeInput);
+
 			//meFollowed
 		}
 

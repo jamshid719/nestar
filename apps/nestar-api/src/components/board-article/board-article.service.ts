@@ -60,8 +60,11 @@ export class BoardArticleService {
 				await this.boardArticleStatsEditor({ _id: articleId, targetKey: 'articleViews', modifier: 1 });
 				targetBoardArticle.articleViews++;
 			}
-			//meLiked
+			//meLiked => (bunda murajatchimiz shu articlening(articleId) malumotlarini oloyotgan paytda, oldin bu propertyga like bosganmi yuqmi malumotlarni topib beradigan mantigi).
+			const likeInput = { memberId: memberId, likeRefId: articleId, likeGroup: LikeGroup.ARTICLE };
+			targetBoardArticle.meLiked = await this.likeService.checkLikeExistence(likeInput);
 		}
+
 		targetBoardArticle.memberData = await this.memberService.getMember(null, targetBoardArticle.memberId); //null quyishimz sabab=> bu yerda shu propertyni yaratgan memberning viewi  oshmaydi.
 		return targetBoardArticle;
 	}

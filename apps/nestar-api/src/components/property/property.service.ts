@@ -62,8 +62,11 @@ export class PropertyService {
 				await this.propertyStatsEditor({ _id: propertyId, targetKey: 'propertyViews', modifier: 1 });
 				targetProperty.propertyViews++;
 			}
-			//meLiked
+			//meLiked => (bunda murajatchimiz shu propertyning(propertyId) malumotlarini oloyotgan paytda, oldin bu propertyga like bosganmi yuqmi malumotlarni topib beradigan mantigi).
+			const likeInput = { memberId: memberId, likeRefId: propertyId, likeGroup: LikeGroup.PROPERTY };
+			targetProperty.meLiked = await this.likeService.checkLikeExistence(likeInput);
 		}
+
 		targetProperty.memberData = await this.memberService.getMember(null, targetProperty.memberId); //null quyishimz sabab=> bu yerda shu propertyni yaratgan memberning viewi  oshmaydi.
 		return targetProperty;
 	}
