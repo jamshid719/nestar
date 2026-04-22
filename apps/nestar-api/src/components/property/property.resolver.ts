@@ -16,6 +16,7 @@ import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { WithoutGuard } from '../auth/guards/without.guard';
 import { shapeIntoMongooseObjectId } from '../../libs/config';
 import { PropertyUpdate } from '../../libs/dto/property/property.update';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Resolver()
 export class PropertyResolver {
@@ -77,6 +78,18 @@ export class PropertyResolver {
 		console.log('Query: getAgentProperties');
 
 		return await this.propertyService.getAgentProperties(memberId, input);
+	}
+
+	/*LIKE*/
+	@UseGuards(AuthGuard)
+	@Mutation(() => Property)
+	public async likeTargetProperty(
+		@Args('propertyId') input: string, //like bulayotgan property
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Property> {
+		console.log('Mutation: likeTargetProperty');
+		const likeRefId = shapeIntoMongooseObjectId(input);
+		return await this.propertyService.likeTargetProperty(memberId, likeRefId);
 	}
 
 	/**ADMIN */
