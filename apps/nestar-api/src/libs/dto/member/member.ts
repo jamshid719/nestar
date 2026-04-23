@@ -2,6 +2,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ObjectId } from 'mongoose';
 import { MemberAuthType, MemberStatus, MemberType } from '../../enums/member.enum';
 import { MeLiked } from '../like/like';
+import { MeFollowed } from '../follow/follow';
 
 @ObjectType() // Backenddan chiqadigan DTO va buni MemberService modelida chaqiramiz.(yani, memberModel: Model<Member> tarzda) undan tashqari member>resolverda ham signup & login mutation api lari qaytarayotgan qiymatlari ham "Member" DTO dan iborat
 export class Member {
@@ -86,6 +87,9 @@ export class Member {
 
 	@Field(() => [MeLiked], { nullable: true })
 	meLiked?: MeLiked[];
+
+	@Field(() => [MeFollowed], { nullable: true })
+	meFollowed?: MeFollowed[];
 }
 
 /**getAgents da ishlatiladigan type  */
