@@ -26,9 +26,9 @@ import { LikeGroup } from '../../libs/enums/like.enum';
 export class PropertyService {
 	constructor(
 		@InjectModel('Property') private readonly propertyModel: Model<Property>,
-		private memberService: MemberService,
-		private viewService: ViewService,
-		private likeService: LikeService,
+		private readonly memberService: MemberService,
+		private readonly viewService: ViewService,
+		private readonly likeService: LikeService,
 	) {}
 
 	public async createProperty(input: PropertyInput): Promise<Property> {
