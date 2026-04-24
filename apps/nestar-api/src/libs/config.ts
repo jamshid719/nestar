@@ -1,6 +1,7 @@
 import { ObjectId } from 'bson';
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
+import { T } from './types/common';
 
 export const shapeIntoMongooseObjectId = (target: any) => {
 	return typeof target === 'string' ? new ObjectId(target) : target;
@@ -28,6 +29,7 @@ export const getSerialForImage = (filename: string) => {
 	return uuidv4() + ext;
 };
 
+//$lookup: birlik qiymatni solishtirish, yani singular comparision(yani, 1ta collectiondan(memberId) 1ta dateSetni boshqa collection bn(members dagi _id) bn solishtiradi).
 export const lookupMember = {
 	$lookup: {
 		from: 'members',
@@ -53,4 +55,42 @@ export const lookupFollowerData = {
 		foreignField: '_id',
 		as: 'followerData',
 	},
+};
+
+//ComplexQuery mantiq
+
+export const lookupAuthMemberLiked = (memberId: T, targetRefId: string = '$_id') => {
+	//targetRefId = '$_id' — default qiymat, ya'ni hozirgi documentning _id si (masalan: property _id)
+	return {
+		$lookup: {
+			from: 'likes',
+			let: {
+				//search mexanizmini tawkil qiladigan variable lar
+				localLikeRefId: targetRefId,
+				localMemberId: memberId,
+				localMyFavorite: true, // true bulishi => frontend da like holatini tekshirishni osonlashtiradi
+			},
+			pipeline: [
+				{
+					$match: {
+						//solishtirish mantigi
+						$expr: {
+							//bir nechta narsani match qilamiz, shuning un $expr foydalanamiz.
+							$and: [{ $eq: ['$likeRefId', '$$localLikeRefId'] }, { $eq: ['$memberId', '$$localMemberId'] }], //$eq => equal
+						},
+					},
+				},
+				{
+					$project: {
+						//likes collectiondan izlab, datani qaytariw
+						_id: 0, // bu yerda likening _id si kkmas, shung un 0
+						memberId: 1,
+						likeRefId: 1,
+						myFavorite: '$$localMyFavorite',
+					},
+				},
+			],
+			as: 'meLiked',
+		},
+	};
 };

@@ -38,6 +38,7 @@ export class LikeService {
 
 	//CheckLikeExistence
 	public async checkLikeExistence(input: LikeInput): Promise<MeLiked[]> {
+		console.log('meLIked');
 		const { memberId, likeRefId } = input;
 		const result = await this.likeModel.findOne({ memberId: memberId, likeRefId: likeRefId }).exec();
 		return result ? [{ memberId: memberId, likeRefId: likeRefId, myFavorite: true }] : [];

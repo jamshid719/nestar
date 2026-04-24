@@ -17,7 +17,7 @@ import { ViewGroup } from '../../libs/enums/view.enum';
 import { PropertyUpdate } from '../../libs/dto/property/property.update';
 import * as moment from 'moment';
 import { lookup } from 'dns';
-import { lookupMember, shapeIntoMongooseObjectId } from '../../libs/config';
+import { lookupAuthMemberLiked, lookupMember, shapeIntoMongooseObjectId } from '../../libs/config';
 import { LikeService } from '../like/like.service';
 import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
@@ -62,6 +62,7 @@ export class PropertyService {
 				await this.propertyStatsEditor({ _id: propertyId, targetKey: 'propertyViews', modifier: 1 });
 				targetProperty.propertyViews++;
 			}
+
 			//meLiked => (bunda murajatchimiz shu propertyning(propertyId) malumotlarini oloyotgan paytda, oldin bu propertyga like bosganmi yuqmi malumotlarni topib beradigan mantigi).
 			const likeInput = { memberId: memberId, likeRefId: propertyId, likeGroup: LikeGroup.PROPERTY };
 			targetProperty.meLiked = await this.likeService.checkLikeExistence(likeInput);
@@ -111,8 +112,10 @@ export class PropertyService {
 						list: [
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
+							//meLiked
+							lookupAuthMemberLiked(memberId), //qavsda(memberId, "_id") quyishimz ham mumkin, ammo lookupAuthMemberLiked define qismida bydefault quyib ketganmiz. ("_id" => listda hosil bulgan har bir property ning id isi.)
 							lookupMember,
-							{ $unwind: '$memberData' }, //arrayni ichidagi qiymatni(uzi 1ta) olib [] belgini yuqotib memberDataga quyib beradi.
+							{ $unwind: '$memberData' }, //arrayni ichidagi qiymatni(uzi 1ta) olib [] belgini yuqotib memberDataga quyib beradi, hamda objectga aylantirib beradi.
 						],
 						metaCounter: [{ $count: 'total' }],
 					},
