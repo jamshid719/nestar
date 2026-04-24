@@ -6,7 +6,12 @@ import { MemberService } from '../member/member.service';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { FollowInquiry } from '../../libs/dto/follow/follow.input';
 import { T } from '../../libs/types/common';
-import { lookupAuthMemberLiked, lookupFollowerData, lookupFollowingData } from '../../libs/config';
+import {
+	lookupAuthMemberFollowed,
+	lookupAuthMemberLiked,
+	lookupFollowerData,
+	lookupFollowingData,
+} from '../../libs/config';
 
 @Injectable()
 export class FollowService {
@@ -74,11 +79,15 @@ export class FollowService {
 					$facet: {
 						list: [
 							{ $skip: (page - 1) * limit },
-							{ $limit: limit },
+							{ $limit: limit }, //following larni chiqarib beradi
 							//meLiked
 							lookupAuthMemberLiked(memberId, '$followingId'), //bu yerda boshqacha biz aynana memberId dan kn "$followingId" kursatib ketayapmiz sababi, sababi lookupAuthMemberLiked define qismida bydefault quyib ketganmiz.
 
 							//meFollowed
+							lookupAuthMemberFollowed({
+								followerId: memberId,
+								followingId: '$followingId',
+							}),
 							lookupFollowingData,
 							{ $unwind: '$followingData' },
 						],
@@ -95,6 +104,7 @@ export class FollowService {
 	public async getMemberFollowers(memberId: ObjectId, input: FollowInquiry): Promise<Followers> {
 		const { page, limit, search } = input;
 		if (!search?.followingId) throw new InternalServerErrorException(Message.BAD_REQUEST);
+		console.log('followingId:', search.followingId);
 
 		const match: T = { followingId: search?.followingId };
 		console.log('match:', match);
@@ -107,10 +117,15 @@ export class FollowService {
 					$facet: {
 						list: [
 							{ $skip: (page - 1) * limit },
-							{ $limit: limit },
+							{ $limit: limit }, //followerlarni chiqarib beradi
 							//meLiked
 							lookupAuthMemberLiked(memberId, '$followerId'), //bu yerda boshqacha biz aynana memberId dan kn "$followerId" kursatib ketayapmiz sababi, sababi lookupAuthMemberLiked define qismida bydefault quyib ketganmiz.
+
 							//meFollowed
+							lookupAuthMemberFollowed({
+								followerId: memberId,
+								followingId: '$followerId',
+							}),
 							lookupFollowerData,
 							{ $unwind: '$followerData' },
 						],
