@@ -14,6 +14,7 @@ import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
 import { LikeService } from '../like/like.service';
 import { Follower, Following, MeFollowed } from '../../libs/dto/follow/follow';
+import { lookupAuthMemberLiked } from '../../libs/config';
 
 @Injectable()
 export class MemberService {
@@ -132,7 +133,12 @@ export class MemberService {
 				{
 					$facet: {
 						// bir vaqtning uzida bir qancha querylarni amalga oshirib, alohida nomlar bn natijalarni olsa buladi.
-						list: [{ $skip: (input.page - 1) * input.limit }, { $limit: input.limit }],
+						list: [
+							{ $skip: (input.page - 1) * input.limit },
+							{ $limit: input.limit },
+							//meLiked
+							lookupAuthMemberLiked(memberId), //qavsda memberId dan kn (memberId, "_id") quyishimz ham mumkin, ammo lookupAuthMemberLiked define qismida bydefault quyib ketganmiz. ("_id" => listda hosil bulgan har bir member ning id isi.)
+						],
 						metaCounter: [{ $count: 'total' }], //countni 'total' nom bilan nomlash
 					}, //facet dagi pipelinelar(list, metaCounter) tepadagi $match va $sort qonuniyatga buysungan holda, bir biridan mustaqil bulgan(uzoro bogliq bulmagan) qiymatlar qaytaradi. Xulosa qilib aytganda, facet aggregation ichida aggregationlar yaratadi(list, metaCounter...)
 				},

@@ -14,7 +14,7 @@ import { StatisticModifier, T } from '../../libs/types/common';
 import { BoardArticleStatus } from '../../libs/enums/board-article.enum';
 import { ViewGroup } from '../../libs/enums/view.enum';
 import { BoardArticleUpdate } from '../../libs/dto/board-article/board-article.update';
-import { lookupMember, shapeIntoMongooseObjectId } from '../../libs/config';
+import { lookupAuthMemberLiked, lookupMember, shapeIntoMongooseObjectId } from '../../libs/config';
 import { LikeService } from '../like/like.service';
 import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
@@ -110,6 +110,8 @@ export class BoardArticleService {
 						list: [
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
+							//meLiked
+							lookupAuthMemberLiked(memberId), //qavsda memberId dan kn (memberId, "_id") quyishimz ham mumkin, ammo lookupAuthMemberLiked define qismida bydefault quyib ketganmiz. ("_id" => listda hosil bulgan har bir boardArticle ning id isi.)
 							lookupMember,
 							{ $unwind: '$memberData' }, //arrayni ichidagi qiymatni(uzi 1ta) olib [] belgini yuqotib memberDataga quyib beradi.
 						],

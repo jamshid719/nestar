@@ -6,7 +6,7 @@ import { MemberService } from '../member/member.service';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { FollowInquiry } from '../../libs/dto/follow/follow.input';
 import { T } from '../../libs/types/common';
-import { lookupFollowerData, lookupFollowingData } from '../../libs/config';
+import { lookupAuthMemberLiked, lookupFollowerData, lookupFollowingData } from '../../libs/config';
 
 @Injectable()
 export class FollowService {
@@ -76,6 +76,8 @@ export class FollowService {
 							{ $skip: (page - 1) * limit },
 							{ $limit: limit },
 							//meLiked
+							lookupAuthMemberLiked(memberId, '$followingId'), //bu yerda boshqacha biz aynana memberId dan kn "$followingId" kursatib ketayapmiz sababi, sababi lookupAuthMemberLiked define qismida bydefault quyib ketganmiz.
+
 							//meFollowed
 							lookupFollowingData,
 							{ $unwind: '$followingData' },
@@ -107,6 +109,7 @@ export class FollowService {
 							{ $skip: (page - 1) * limit },
 							{ $limit: limit },
 							//meLiked
+							lookupAuthMemberLiked(memberId, '$followerId'), //bu yerda boshqacha biz aynana memberId dan kn "$followerId" kursatib ketayapmiz sababi, sababi lookupAuthMemberLiked define qismida bydefault quyib ketganmiz.
 							//meFollowed
 							lookupFollowerData,
 							{ $unwind: '$followerData' },
