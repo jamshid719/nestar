@@ -66,6 +66,15 @@ export const lookupFavorite = {
 	},
 };
 
+export const lookupVisit = {
+	$lookup: {
+		from: 'members',
+		localField: 'visitedProperty.memberId',
+		foreignField: '_id',
+		as: 'visitedProperty.memberData',
+	},
+};
+
 //ComplexQuery mantiq
 
 export const lookupAuthMemberLiked = (memberId: T, targetRefId: string = '$_id') => {
