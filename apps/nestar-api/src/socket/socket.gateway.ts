@@ -30,7 +30,7 @@ export class SocketGateway implements OnGatewayInit {
 }
 
 /**
- User kirdi → handleConnection → summaryClient++
+User kirdi → handleConnection → summaryClient++
 User chiqdi → handleDisconnect → summaryClient--
 User xabar yubordi → handleMessage → "Hello world!" qaytaradi
  */
