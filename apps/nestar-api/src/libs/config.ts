@@ -86,7 +86,7 @@ export const lookupAuthMemberLiked = (memberId: T, targetRefId: string = '$_id')
 				//search mexanizmini tawkil qiladigan variable lar
 				localLikeRefId: targetRefId,
 				localMemberId: memberId,
-				localMyFavorite: true, // true bulishi => frontend da like holatini tekshirishni osonlashtiradi
+				localMyFavorite: true, // true bulishi =>DB da shunchaki debuging qilish un, undan tashqari frontend da like holatini tekshirishni osonlashtiradi
 			},
 			pipeline: [
 				{
