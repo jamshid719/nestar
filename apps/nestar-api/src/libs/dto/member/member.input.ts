@@ -66,7 +66,7 @@ export class AgentsInquiry {
 	limit: number;
 
 	@IsOptional() //agentlarni qaysi parametrlar orqali sorting mexanizmini amalga oshirish
-	@IsIn([availableAgentSorts]) //Isin degani shu arrayni ichidagi qiymatlarni qabul qiladi degani
+	@IsIn(availableAgentSorts) //Isin degani shu arrayni ichidagi qiymatlarni qabul qiladi degani
 	@Field(() => String, { nullable: true })
 	sort?: string;
 
