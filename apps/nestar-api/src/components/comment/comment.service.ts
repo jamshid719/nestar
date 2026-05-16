@@ -95,7 +95,12 @@ export class CommentService {
 							{ $limit: input.limit },
 							//meLiked
 							lookupMember,
-							{ $unwind: '$memberData' }, //arrayni ichidagi qiymatni(uzi 1ta) olib [] belgini yuqotib memberDataga quyib beradi.
+							{
+								$unwind: {
+									path: '$memberData',
+									preserveNullAndEmptyArrays: true, // ←  $unwind da bo'sh array bo'lsa documentni o'chirmasligi uchun shu kerak
+								},
+							}, //arrayni ichidagi qiymatni(uzi 1ta) olib [] belgini yuqotib memberDataga quyib beradi.
 						],
 						metaCounter: [{ $count: 'total' }], //total => bu commentRefId(PROPERTY yoki MEMBER yoki ARTICLE bulishi mumkin)ga yozilgan commentlar soni
 					},
