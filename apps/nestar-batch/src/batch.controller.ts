@@ -18,7 +18,7 @@ export class BatchController {
 
 	//JobSchedulers
 	//Top larga doir batchRollback
-	@Cron('00 00 01 * * *', { name: BATCH_ROLLBACK }) //kechasi soat 1da bir marta ishga tushadi
+	@Cron('0/30 * * * * *', { name: BATCH_ROLLBACK }) //kechasi soat 1da bir marta ishga tushadi
 	public async batchRollback() {
 		try {
 			this.logger['context'] = BATCH_ROLLBACK;
@@ -30,7 +30,7 @@ export class BatchController {
 	}
 
 	//kechasi soat 1 ning 20 sec. ishga tushadi
-	@Cron('20 00 01 * * *', { name: BATCH_TOP_PROPERTIES })
+	@Cron('10/30 * * * * *', { name: BATCH_TOP_PROPERTIES })
 	public async batchTopProperties() {
 		try {
 			this.logger['context'] = BATCH_TOP_PROPERTIES;
@@ -42,7 +42,7 @@ export class BatchController {
 	}
 
 	//kechasi soat 1 ning 40 sec. ishga tushadi
-	@Cron('40 00 01 * * *', { name: BATCH_TOP_AGENTS })
+	@Cron('20/30 * * * * *', { name: BATCH_TOP_AGENTS })
 	public async batchTopAgents() {
 		try {
 			this.logger['context'] = BATCH_TOP_AGENTS;
