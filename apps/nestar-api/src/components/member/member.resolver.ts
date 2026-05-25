@@ -104,9 +104,9 @@ export class MemberResolver {
 	@Roles(MemberType.ADMIN)
 	@UseGuards(RolesGuard)
 	@Query(() => Members)
-	public async getAllMemberByAdmin(@Args('input') input: MembersInquiry): Promise<Members> {
+	public async getAllMembersByAdmin(@Args('input') input: MembersInquiry): Promise<Members> {
 		//bu yerga Admin id si kk bulmaydi.
-		return await this.memberService.getAllMemberByAdmin(input);
+		return await this.memberService.getAllMembersByAdmin(input);
 	}
 
 	@Roles(MemberType.ADMIN)
